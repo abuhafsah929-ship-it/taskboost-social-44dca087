@@ -25,9 +25,13 @@ function AdminWithdrawals() {
 
   const update = useMutation({
     mutationFn: async ({ id, status }: { id: string; status: "approved" | "paid" | "rejected" }) => {
-      const patch: Record<string, unknown> = { status, reviewed_by: user.id, reviewed_at: new Date().toISOString() };
-      if (status === "paid") patch.paid_at = new Date().toISOString();
-      const { error } = await supabase.from("withdrawals").update(patch).eq("id", id);
+      const nowIso = new Date().toISOString();
+      const { error } = await supabase.from("withdrawals").update({
+        status,
+        reviewed_by: user.id,
+        reviewed_at: nowIso,
+        ...(status === "paid" ? { paid_at: nowIso } : {}),
+      }).eq("id", id);
       if (error) throw error;
     },
     onSuccess: () => { toast.success("Updated"); qc.invalidateQueries(); },
