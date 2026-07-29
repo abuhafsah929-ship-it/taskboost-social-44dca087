@@ -23,8 +23,13 @@ function Referrals() {
   const { data: referrals = [] } = useQuery({
     queryKey: ["my-refs", user.id],
     queryFn: async () => {
-      const { data } = await supabase.from("referrals").select("id,bonus_paid,created_at,referee_id,profiles!referrals_referee_id_fkey(full_name,username)").eq("referrer_id", user.id).order("created_at", { ascending: false });
-      return data ?? [];
+      const { data: refs } = await supabase.from("referrals").select("id,bonus_paid,created_at,referee_id").eq("referrer_id", user.id).order("created_at", { ascending: false });
+      const rows = refs ?? [];
+      if (rows.length === 0) return [] as Array<{ id: string; bonus_paid: number; created_at: string; referee_id: string; name: string | null }>;
+      const ids = rows.map((r) => r.referee_id);
+      const { data: profs } = await supabase.from("profiles").select("id,full_name,username").in("id", ids);
+      const map = new Map((profs ?? []).map((p) => [p.id, p.full_name ?? p.username ?? null]));
+      return rows.map((r) => ({ ...r, bonus_paid: Number(r.bonus_paid), name: map.get(r.referee_id) ?? null }));
     },
   });
 
@@ -84,7 +89,7 @@ function Referrals() {
           {referrals.map((r) => (
             <div key={r.id} className="flex items-center justify-between py-3">
               <div>
-                <p className="text-sm font-medium">{r.profiles?.full_name ?? r.profiles?.username ?? "New user"}</p>
+                <p className="text-sm font-medium">{r.name ?? "New user"}</p>
                 <p className="text-xs text-muted-foreground">{new Date(r.created_at).toLocaleDateString()}</p>
               </div>
               <span className="text-sm font-semibold text-success">+{naira(r.bonus_paid)}</span>
