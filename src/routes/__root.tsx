@@ -77,14 +77,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "TaskBoost — Earn ₦ Completing Social Media Tasks" },
+      { name: "description", content: "TaskBoost pays Nigerians to complete simple social media tasks: like, follow, and subscribe. Sign up, earn, and cash out to your bank, OPay, or PalmPay." },
+      { name: "author", content: "TaskBoost" },
+      { property: "og:title", content: "TaskBoost — Earn ₦ Completing Social Media Tasks" },
+      { property: "og:description", content: "Nigeria's simplest earning platform. Complete Facebook, Instagram, TikTok, YouTube and X tasks, get paid in Naira." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
-      { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:site", content: "@TaskBoost" },
     ],
     links: [
       {
