@@ -25,12 +25,10 @@ function AdminWithdrawals() {
 
   const update = useMutation({
     mutationFn: async ({ id, status }: { id: string; status: "approved" | "paid" | "rejected" }) => {
-      const nowIso = new Date().toISOString();
       const { error } = await supabase.from("withdrawals").update({
         status,
         reviewed_by: user.id,
-        reviewed_at: nowIso,
-        ...(status === "paid" ? { paid_at: nowIso } : {}),
+        reviewed_at: new Date().toISOString(),
       }).eq("id", id);
       if (error) throw error;
     },
