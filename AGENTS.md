@@ -8,3 +8,6 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+## Platform data rules
+- Keep wallet-affecting plan purchases, daily claims, deposits, and payouts atomic in database functions or triggers; this prevents balance races and duplicate credits.
